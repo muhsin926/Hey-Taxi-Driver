@@ -31,7 +31,8 @@ const Dashboard = () => {
       });
   }, [socket]);
   const handleAvailable = async () => {
-    const token = localStorage.getItem("token");
+    try{
+      const token = localStorage.getItem("token");
     await axios
       .post(
         `${url}/api/driver/available`,
@@ -43,6 +44,9 @@ const Dashboard = () => {
       .then(() => {
         setAvailable(!available);
       });
+    }catch(err){
+      console.log(err);
+    }
   };
 
   const driverAvailable = async () => {

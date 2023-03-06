@@ -14,11 +14,15 @@ const DriveNow = () => {
     const navigate = useNavigate()
 
     const getRideNow = async () => {
+      try{
         const token = localStorage.getItem("token");
         const { data } = await axios.get(`${url}/api/driver/ride-now`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(setRideNow(data.requests));
+      }catch(err){
+        console.log("can't get ride now")    
+    }
     };
 
     useEffect(() => {
