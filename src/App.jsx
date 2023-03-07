@@ -7,7 +7,7 @@ import Loginpage from "./pages/Loginpage";
 import RequirementPage from "./pages/RequirementPage";
 import SignupPage from "./pages/SignupPage";
 import VehiclesPage from "./pages/VehiclesPage";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { setSocket } from "./redux/slices/SocketSlice";
 import jwt_decode from "jwt-decode";
 import { setUserId } from "./redux/slices/AuthSlice";
@@ -19,13 +19,15 @@ import InboxPage from "./pages/InboxPage";
 import NotVerifiedPage from "./pages/NotVerifiedPage";
 
 const App = () => {
-  const { userId } = useSelector((state) => state.auth)
+  // const { userId } = useSelector((state) => state.auth)
   const { socket } = useSelector((state) => state.socket)
   const dispatch = useDispatch()
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"));
-    const decoded = jwt_decode(token);
-    dispatch(setUserId(decoded.userId))
+    if (token) {
+      const decoded = jwt_decode(token);
+      dispatch(setUserId(decoded.userId))
+    }
     const data = io(import.meta.env.VITE_SERVER_DOMAIN)
     dispatch(setSocket(data))
     socket && socket.emit("addDriver", userId);
@@ -33,20 +35,20 @@ const App = () => {
   return (
     <>
       <Router>
-            <Routes>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/login" element={<Loginpage />} />
-              <Route path="/requirements" element={<RequirementPage />} />
-              <Route path="/requirements/docUpload" element={<DocUploaderPage />} />
-              <Route path="/vehicles" element={<VehiclesPage />} />
-              <Route path="/driving" element={<DrivingPage />} />
-              <Route path="/earnings" element={<EarnigsPage />} />
-              <Route path="/trip_manage" element={<TripManagePage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/chat" element={<InboxPage />} />
-              <Route path="/not_verified" element={<NotVerifiedPage />} />
-            </Routes>
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<Loginpage />} />
+          <Route path="/requirements" element={<RequirementPage />} />
+          <Route path="/requirements/docUpload" element={<DocUploaderPage />} />
+          <Route path="/vehicles" element={<VehiclesPage />} />
+          <Route path="/driving" element={<DrivingPage />} />
+          <Route path="/earnings" element={<EarnigsPage />} />
+          <Route path="/trip_manage" element={<TripManagePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/chat" element={<InboxPage />} />
+          <Route path="/not_verified" element={<NotVerifiedPage />} />
+        </Routes>
       </Router>
     </>
   );
