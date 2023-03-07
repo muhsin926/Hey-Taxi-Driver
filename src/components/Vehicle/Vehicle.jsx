@@ -38,7 +38,7 @@ const Vehicle = () => {
   return (
     <div>
       <Toaster />
-      <div className="flex justify-end">
+      <div className="flex justify-end mb-4 ">
         <button
           className="py-1 px-3 bg-black hover:bg-gray-800 text-white rounded"
           onClick={() => dispatch(setShowModal())}
@@ -55,7 +55,7 @@ const Vehicle = () => {
         <section className={`${vehicles.length <= 0 && 'flex justify-center items-center w-full h-32'}`}>
           <div className="relative overflow-x-auto">
             {vehicles.length > 0 ? (
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-left bg-black rounded-xl text-white">
               <thead className="text-xs uppercase">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -83,7 +83,7 @@ const Vehicle = () => {
               </thead>
               <tbody>
                 {vehicles.map((vehicle) => (
-                  <tr className="bg-white border-b hover:bg-gray-100">
+                  <tr className="bg-zinc-100 text-black border-b hover:bg-zinc-300">
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium whitespace-nowrap"

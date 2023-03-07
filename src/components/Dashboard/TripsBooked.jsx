@@ -22,7 +22,7 @@ const TripsBooked = () => {
     return (
         <div class="relative overflow-x-auto">
             {booked.length > 0 ?
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-left bg-black rounded-xl text-white">
                     <thead class="text-xs uppercase">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -41,7 +41,7 @@ const TripsBooked = () => {
                     </thead>
                     <tbody>
                         {booked.map((trip) => (
-                            <tr class="bg-white border-b" key={trip._id}>
+                            <tr class="bg-zinc-100 text-black border-b hover:bg-zinc-200" key={trip._id}>
                                 <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {trip?.schedule?.date}
                                 </th>

@@ -19,7 +19,7 @@ import InboxPage from "./pages/InboxPage";
 import NotVerifiedPage from "./pages/NotVerifiedPage";
 
 const App = () => {
-  // const { userId } = useSelector((state) => state.auth)
+  const { userId } = useSelector((state) => state.auth)
   const { socket } = useSelector((state) => state.socket)
   const dispatch = useDispatch()
   useEffect(() => {

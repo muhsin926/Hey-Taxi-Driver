@@ -69,23 +69,23 @@ const Modal = ({ edit, loading, setLoading }) => {
         dispatch(setUnShowModal());
       } else {
       }
-      if (img.length > 1) {
-        const { data } = await axios.post(
-          `${url}/api/driver/vehicle`,
-          {
-            values,
-            img,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setLoading(false);
-        data.status
-          ? toast.success("Vehicle Added")
-          : toast.error("somthing wrong please try again");
-        dispatch(setUnShowModal());
-      }
+    }
+    if (img.length > 1) {
+      const { data } = await axios.post(
+        `${url}/api/driver/vehicle`,
+        {
+          values,
+          img,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setLoading(false);
+      data.status
+        ? toast.success("Vehicle Added")
+        : toast.error("somthing wrong please try again");
+      dispatch(setUnShowModal());
     }
   };
 

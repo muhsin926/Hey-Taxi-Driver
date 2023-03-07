@@ -199,13 +199,13 @@ const Chat = () => {
             {messages?.map((msg) =>
               msg?.senderType == "Driver" ? (
                 <div className=" my-5 w-full flex justify-end">
-                  <h1 className=" bg-gradient-to-br from-cyan-400 to-cyan-800 p-3 mr-2 rounded-t-xl rounded-bl-xl ">
+                  <h1 className=" bg-gradient-to-br from-cyan-400 to-cyan-800 p-3 mr-2 rounded-t-xl rounded-bl-xl text-white ">
                     {msg.message}
                   </h1>
                 </div>
               ) : (
                 <div className=" my-5 w-full flex justify-start">
-                  <h1 className="bg-gradient-to-bl from-orange-400 to-orange-700 p-3 ml-2 rounded-t-xl rounded-br-lg">
+                  <h1 className="bg-gradient-to-bl from-orange-400 to-orange-700 p-3 ml-2 rounded-t-xl rounded-br-lg text-white">
                     {msg.message}
                   </h1>
                 </div>

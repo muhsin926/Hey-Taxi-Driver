@@ -109,7 +109,7 @@ export default function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2  origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto h-96 scrollbar-hide">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-96 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto h-96 scrollbar-hide">
                           {notification.map((noti) => (
                         <Menu.Item>
                           {({ active }) => (
@@ -125,15 +125,15 @@ export default function Navbar() {
                                   <img className="w-14 h-14 rounded-full" src={blankProfile} alt="profile" />
                                   <div className="flex justify-between">
                                     <div className="flex flex-col">
-                                      <h1 className="text-lg ml-1 font-medium">{noti.sender.name}</h1>
+                                      <h1 className="text-lg ml-1 font-medium">{noti.sender?.name}</h1>
                                       <div className="ml-1 flex ">
-                                        <h1>{noti.pickupLocation.split(',')[0]}</h1>
+                                        <h1>{noti?.pickupLocation.split(',')[0]}</h1>
                                         <h1 className="mx-3">to</h1>
-                                        <h1>{noti.destination.split(',')[0]}</h1>
+                                        <h1>{noti?.destination.split(',')[0]}</h1>
                                       </div>
                                     </div>
                                     <div className="flex  items-center">
-                                      <button onClick={() => accepted(noti._id)} className="rounded hover:bg-green-500 font-semibold  px-3 text-base bg-green-400 text-white py-1 ml-4">Accept</button>
+                                      <button onClick={() => accepted(noti?._id)} className="rounded hover:bg-green-500 font-semibold  px-3 text-base bg-green-400 text-white py-1 ml-4">Accept</button>
                                     </div>
                                   </div>
                                 </div>
