@@ -1,8 +1,6 @@
-import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Dashboard, Navbar, SideBar, TripManage, Vehicle } from "./components";
 import DashboardPage from "./pages/DashboardPage";
 import DocUploaderPage from "./pages/DocUploaderPage";
 import Loginpage from "./pages/Loginpage";

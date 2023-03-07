@@ -1,1 +1,1 @@
-export default 'http://www.server.gadsto.store'
+export default 'https://www.server.gadsto.store'

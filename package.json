@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://www.server.gadsto.store",
+  "proxy": "https://www.server.gadsto.store",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
