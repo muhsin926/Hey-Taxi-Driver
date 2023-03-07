@@ -167,6 +167,7 @@ const DocUploader = () => {
                 pattern="/^\s*\S.*$/" 
                 title="Please valid model name"
                 maxLength={10}
+                required
                 id="model"
               />
               <p className="text-red-500 text-base mb-3 ">{model.length == 10 && 'Model name should not longer'}</p>

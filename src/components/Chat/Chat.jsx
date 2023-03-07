@@ -72,7 +72,7 @@ const Chat = () => {
 
   useEffect(() => {
     socket &&
-      socket.current.on("receive_msg", (data) => {
+      socket.on("receive_msg", (data) => {
         data.msg && setMasseges((pre) => [...pre, data]);
         console.log(data);
       });

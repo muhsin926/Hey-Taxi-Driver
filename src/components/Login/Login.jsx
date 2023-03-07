@@ -27,7 +27,6 @@ const Login = () => {
     Axios.post(`${url}/api/driver/login`, { email, password })
       .then((response) => {
         const result = response.data;
-        console.log(result);
         if (result.status) {
           localStorage.setItem("token", JSON.stringify(result.token));
           navigate("/");
