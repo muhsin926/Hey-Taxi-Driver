@@ -2,7 +2,7 @@ import React from "react";
 import useAuth from "../customHooks/useAuth";
 
 const ProtectedSignRoute = ({ children }) => {
-  const authenticated = useAuth();
+  const authenticated = useAuth()
   if (authenticated) {
     window.history.back();
     return;

@@ -4,19 +4,18 @@ import { setUserId } from "../redux/slices/AuthSlice";
 import { useDispatch } from "react-redux";
 
 const useAuth = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"));
-    if (!token) {
-
-      return authenticated
+    if (token) {
+      const decoded = jwt_decode(token);
+      dispatch(setUserId(decoded.userId));
+      setAuthenticated(true);
     }
-    const decoded = jwt_decode(token);
-    dispatch(setUserId(decoded.userId))
-    setAuthenticated(true);
-  }, []);
+  }, [authenticated, dispatch]);
+
   return authenticated;
 };
 

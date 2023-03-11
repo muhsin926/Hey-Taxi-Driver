@@ -1,12 +1,12 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { blankProfile, logo1 } from "../../assets";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import url from '../../api/Api'
 import toast, { Toaster } from "react-hot-toast";
+import { SocketContext } from "../../context/SocketContext";
 
 
 const navigation = [
@@ -28,8 +28,7 @@ const handleSignOut = () => {
 
 export default function Navbar() {
   const [notification, setNotification] = useState([])
-  const { socket } = useSelector((state) => state.socket)
-  const navigate = useNavigate()
+  const {socket} = useContext(SocketContext)
 
   const getNotification = async () => {
     const { data } = await axios.get(`${url}/api/driver/requests`)
@@ -40,42 +39,26 @@ export default function Navbar() {
     getNotification()
   }, [])
 
-  const accepted = async (id) => {
+  const accepted = async (noti) => {
+    socket.emit("ride_accept", {
+      to: noti.sender,
+      destination: noti.destination,
+     });
+
     const token = localStorage.getItem('token')
-    const { data } = await axios.post(`${url}/api/driver/requests`, { id }, {
+    const { data } = await axios.post(`${url}/api/driver/requests`, { id : noti._id}, {
       headers: { Authorization: `Bearer ${token}` }
     })
     data.status && toast.success("Request accepted")
-  }
 
-  // const getDriver = async () => {
-  //   const token = localStorage.getItem('token')
-  //   const { data } = await axios.get(`${url}/api/driver/available`,{
-  //     headers: { Authorization: `Bearer ${token}` }
-  //   })
-  //   data?.driver?.verify ? navigate('/')  : navigate('/not_verified')
-  // }
+  }
 
   useEffect(() => {
-    socket && socket.on("send-request", (data) => {
-      console.log(data);
-      setNoti([...noti, data])
-
+    socket && socket.on("receive_request", (data) => {
+      setNotification([...noti, data])
     })
-  }, [socket])
+  })
 
-  // useEffect(()=>{
-  //    getDriver()
-  // },[])
-
-  const socketCall = () => {
-    socket.emit("send-request", {
-      pickup: "pattambi",
-      droppoff: "calicut",
-      user_name: "Passenger",
-      profile: "image"
-    })
-  }
   return (
     <Disclosure as="nav" className="bg-black ">
 
@@ -113,8 +96,7 @@ export default function Navbar() {
                           {notification.map((noti) => (
                         <Menu.Item>
                           {({ active }) => (
-                            <Link
-                              to={'#'}
+                            <div
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -133,7 +115,7 @@ export default function Navbar() {
                                       </div>
                                     </div>
                                     <div className="flex  items-center">
-                                      <button onClick={() => accepted(noti?._id)} className="rounded hover:bg-green-500 font-semibold  px-3 text-base bg-green-400 text-white py-1 ml-4">Accept</button>
+                                      <button onClick={() => accepted(noti)} className="rounded hover:bg-green-500 font-semibold  px-3 text-base bg-green-400 text-white py-1 ml-4">Accept</button>
                                     </div>
                                   </div>
                                 </div>
@@ -141,7 +123,7 @@ export default function Navbar() {
                               {notification.length == 0 && <div className="text-black">No Notifications</div> }
           
 
-                            </Link>
+                            </div>
                           )}
                         </Menu.Item>
                       ))}

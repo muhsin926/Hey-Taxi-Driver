@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import url from "../../api/Api";
 import { io } from "socket.io-client";
@@ -8,43 +8,44 @@ import TripsBooked from "./TripsBooked";
 import PendigRequest from "./PendigRequest";
 import DriveNow from "./DriveNow";
 import Map from "../Driving/Map";
+import { SocketContext } from "../../context/SocketContext";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { socket } = useSelector((state) => state.socket);
+  const {socket} = useContext(SocketContext)
   const [underline, setUnderline] = useState("drive");
   const [available, setAvailable] = useState(false);
 
-  socket &&
+  if (socket) {
     socket.on("request-receive", (data) => {
       setNotification(data.messsage);
       console.log(data.message);
       console.log(data);
     });
+  }
 
   useEffect(() => {
-    socket &&
-      socket.on("request-receive", (data) => {
-        setNotification(data.messsage);
-        console.log(data.message);
-        console.log(data);
-      });
+    socket && socket.on("request-receive", (data) => {
+      setNotification(data.messsage);
+      console.log(data.message);
+      console.log(data);
+    });
   }, [socket]);
   const handleAvailable = async () => {
-    try{
+    try {
       const token = localStorage.getItem("token");
-    await axios
-      .post(
-        `${url}/api/driver/available`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then(() => {
-        setAvailable(!available);
-      });
-    }catch(err){
+      await axios
+        .post(
+          `${url}/api/driver/available`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(() => {
+          setAvailable(!available);
+        });
+    } catch (err) {
       console.log(err);
     }
   };

@@ -16,7 +16,10 @@ const Vehicle = () => {
   const dispatch = useDispatch();
 
   const getVehicles = useCallback(async () => {
-    const { data } = await axios.get(`${url}/api/driver/vehicle`);
+    const token = localStorage.getItem('token')
+    const { data } = await axios.get(`${url}/api/driver/vehicle`,{
+        headers: { Authorization: `Bearer ${token}`}
+      })
     setVehicles(data.vehicles);
   }, [vehicles]);
 

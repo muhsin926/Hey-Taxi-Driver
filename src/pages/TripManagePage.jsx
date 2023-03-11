@@ -1,9 +1,10 @@
 import React from "react";
 import { Navbar, SideBar, TripManage } from "../components";
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 
 const TripManagePage = () => {
     return (
-        <>
+        <ProtectedRoute>
             <Navbar />
             <main className="h-[38rem] md:py-8 py-4 grid  grid-cols-12">
                 <aside className="hidden md:block col-span-2 ml-7 border shadow-lg   w-full p-8 rounded-lg">
@@ -13,7 +14,7 @@ const TripManagePage = () => {
                     <TripManage />
                 </section>
             </main>
-        </>
+        </ProtectedRoute>
     );
 };
 

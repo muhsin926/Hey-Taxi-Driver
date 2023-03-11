@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
@@ -8,7 +8,6 @@ import RequirementPage from "./pages/RequirementPage";
 import SignupPage from "./pages/SignupPage";
 import VehiclesPage from "./pages/VehiclesPage";
 import { io } from "socket.io-client";
-import { setSocket } from "./redux/slices/SocketSlice";
 import jwt_decode from "jwt-decode";
 import { setUserId } from "./redux/slices/AuthSlice";
 import DrivingPage from "./pages/DrivingPage";
@@ -17,10 +16,11 @@ import TripManagePage from "./pages/TripManagePage";
 import ProfilePage from "./pages/ProfilePage";
 import InboxPage from "./pages/InboxPage";
 import NotVerifiedPage from "./pages/NotVerifiedPage";
+import { SocketContext } from "./context/SocketContext";
 
 const App = () => {
   const { userId } = useSelector((state) => state.auth)
-  const { socket } = useSelector((state) => state.socket)
+  const { socket, setSocket } = useContext(SocketContext);
   const dispatch = useDispatch()
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"));
@@ -29,8 +29,9 @@ const App = () => {
       dispatch(setUserId(decoded.userId))
     }
     const data = io(import.meta.env.VITE_SERVER_DOMAIN)
-    dispatch(setSocket(data))
-    socket && socket.emit("addDriver", userId);
+    setSocket(data)
+   socket && socket.emit("addDriver", userId);
+
   }, [])
   return (
     <>

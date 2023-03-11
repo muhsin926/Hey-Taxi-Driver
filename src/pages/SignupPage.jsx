@@ -5,8 +5,10 @@ import ProtectedSignRoute from "../protectedRoute/ProtectedSignRoute";
 const SignupPage = () => {
   return (
     <>
+      <ProtectedSignRoute>
         <Navbar />
         <Signup />
+      </ProtectedSignRoute>
     </>
   );
 };

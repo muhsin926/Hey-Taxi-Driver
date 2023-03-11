@@ -60,6 +60,7 @@ const Profile = () => {
     } = useForm({ resolver: yupResolver(schema) });
 
     const submitForm = async (values) => {
+        alert("start")
         const token = localStorage.getItem("token")
         const { data } = await axios.patch(`${url}/api/driver/profile`, { values, dp: dp }, {
             headers: { Authorization: `Bearer ${token}` }
@@ -140,22 +141,7 @@ const Profile = () => {
                                 </div>
                                 <p className=" text-red-600">{errors.name?.message}</p>
                             </div>
-                            <div className="col-span-12 md:col-span-6  flex jusify-center flex-col items-center md:mt-16  gap-10">
-                                <div>
-                                    <label htmlFor="email">Email : </label>
-                                    <input
-                                        type="text"
-                                        defaultValue={driver?.email}
-                                        {...register("email")}
-                                        name="email"
-                                        id="email"
-                                        className=" py-3 pl-3 border border-gray-300 hover:shadow-lg rounded-lg"
-                                    />
-                                </div>
-                                <p className=" text-red-600">{errors.email?.message}</p>
-                            </div>
-
-                            <div className="col-span-12 md:col-span-6 flex jusify-center flex-col items-center md:mt-8 gap-10">
+                            <div className="col-span-12 md:col-span-6 flex jusify-center flex-col items-center md:mt-16 gap-10">
                                 <div>
                                     <label htmlFor="mob">Mobile : </label>
                                     <input

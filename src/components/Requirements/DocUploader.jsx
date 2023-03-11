@@ -164,7 +164,7 @@ const DocUploader = () => {
                 type="text"
                 className="w-full pl-3 focus:shadow-lg shadow-black focus:border-gray-400  py-4 border border-gray-300 rounded-lg mb-5"
                 placeholder="model name"
-                pattern="/^\s*\S.*$/" 
+                // pattern="/^\s*\S.*$/" 
                 title="Please valid model name"
                 maxLength={10}
                 required

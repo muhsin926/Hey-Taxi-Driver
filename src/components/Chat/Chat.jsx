@@ -1,21 +1,50 @@
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import { masks } from "dateformat";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { blankProfile } from "../../assets";
+import { SocketContext } from "../../context/SocketContext";
+import { setUserId } from "../../redux/slices/AuthSlice";
 import { setChaters, setToUserId } from "../../redux/slices/ChatSlice";
+import jwt_decode from "jwt-decode";
+import { io } from "socket.io-client";
 
 const Chat = () => {
   const [chatInput, setChatInput] = useState("");
   const [chater, setChater] = useState({});
-  const [messages, setMasseges] = useState([]);
-  const { socket } = useSelector((state) => state.socket);
+  const [messages, setMessages] = useState([]);
+  const { socket } = useContext(SocketContext)
   const { toUserId, chaters } = useSelector((state) => state.chatSlice);
   const { userId } = useSelector((state) => state.auth);
   const [inbox, setInbox] = useState(false);
   const dispatch = useDispatch();
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  });
+
+  function scrollToBottom() {
+    chatRef.current.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+
+  const { setSocket } = useContext(SocketContext);
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      const decoded = jwt_decode(token);
+      dispatch(setUserId(decoded.userId))
+    }
+    const data = io(import.meta.env.VITE_SERVER_DOMAIN)
+    setSocket(data)
+    socket && socket.emit("addDriver", userId);
+  }, [])
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -23,8 +52,14 @@ const Chat = () => {
     socket.emit("send_msg", {
       to: toUserId,
       senderType: "Driver",
-      msg: chatInput,
+      message: chatInput,
     });
+
+    const newMsg = {
+      message: chatInput,
+      senderType: "Driver"
+    }
+    setMessages([...messages, newMsg])
 
     const token = localStorage.getItem("token");
     const { data } = await axios.post(
@@ -56,7 +91,7 @@ const Chat = () => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    setMasseges(data);
+    setMessages(data);
   };
 
   const pickReceiver = (passenger) => {
@@ -70,12 +105,8 @@ const Chat = () => {
     getChater();
   }, []);
 
-  useEffect(() => {
-    socket &&
-      socket.on("receive_msg", (data) => {
-        data.msg && setMasseges((pre) => [...pre, data]);
-        console.log(data);
-      });
+  socket && socket.on("receive_msg", (data) => {
+    setMessages((pre) => [...pre, data]);
   });
 
   return (
@@ -97,7 +128,7 @@ const Chat = () => {
             <h1 className="text-lg text-white font-medium">{chater?.name}</h1>
           </div>
         </div>
-        <div className="h-[22rem] overflow-y-auto">
+        <div ref={chatRef} className="overflow-y-scroll h-[22rem] ">
           {messages?.map((msg) =>
             msg?.senderType == "Driver" ? (
               <div className=" my-5 w-full flex justify-end">
@@ -195,17 +226,17 @@ const Chat = () => {
               <h1 className="text-lg text-white font-medium">{chater?.name}</h1>
             </div>
           </div>
-          <div className="h-[22rem] overflow-y-auto">
+          <div className="h-[22rem] overflow-y-auto text-white">
             {messages?.map((msg) =>
               msg?.senderType == "Driver" ? (
                 <div className=" my-5 w-full flex justify-end">
-                  <h1 className=" bg-gradient-to-br from-cyan-400 to-cyan-800 p-3 mr-2 rounded-t-xl rounded-bl-xl text-white ">
+                  <h1 className=" bg-gradient-to-br from-cyan-400 to-cyan-800 p-3 mr-2 rounded-t-xl rounded-bl-xl">
                     {msg.message}
                   </h1>
                 </div>
               ) : (
                 <div className=" my-5 w-full flex justify-start">
-                  <h1 className="bg-gradient-to-bl from-orange-400 to-orange-700 p-3 ml-2 rounded-t-xl rounded-br-lg text-white">
+                  <h1 className="bg-gradient-to-bl from-orange-400 to-orange-700 p-3 ml-2 rounded-t-xl rounded-br-lg ">
                     {msg.message}
                   </h1>
                 </div>
