@@ -7,10 +7,9 @@ import useVerify from "../customHooks/useVerify";
 
 const ProtectedRoute = ({ children }) => {
   const authenticated = useAuth();
-  const isVerified = useVerify(); 
+  const isVerified = useVerify();
   const navigate = useNavigate();
-
-  if (!authenticated && authenticated != undefined) {
+  if (!authenticated || authenticated == undefined) {
     navigate("/login");
     return null;
   }
