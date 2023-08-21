@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { backgroundImg } from '../assets'
 import { Navbar } from '../components'
-import useVerify from '../customHooks/UseVerify'
 
 const NotVerifiedPage = () => {
      const [isVerified, setIsVerified] = useState()
